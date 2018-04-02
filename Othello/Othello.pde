@@ -29,6 +29,7 @@ void mouseClicked(){
   int y = mouseY / (height / tablero.dimension);
   int ficha;
 
+
   if(tablero.mundo[x][y] == 2){
     // TODO IMPLEMENTAR SUGERENCIAS
     tablero.mundo[x][y] = jugador;
@@ -38,8 +39,7 @@ void mouseClicked(){
     turno = !turno;
     jugador = turno ? 1 : -1;
   
-    tablero.limpia();
-    tablero.movimientosValidos(jugador);
+    tablero.asignaMovimientosValidos(jugador);
 
     tablero.printTablero();
     tablero.printFichas();

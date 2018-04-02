@@ -29,7 +29,7 @@ class Tablero{
     mundo[dimension/2-1][dimension/2-1] = 1;
 
     // Configuración inicial de las posibles tiradas del primer jugador.
-    movimientosValidos(jugador);
+    asignaMovimientosValidos(jugador);
   }
   
   /**
@@ -368,11 +368,19 @@ class Tablero{
   
   ////////////////////////////////RODD//////////////////////////////////
   
-  void movimientosValidos(int jugador){
+  /**
+   * Recorre el tablero y elimina los movimientos válidos en el turno anterior y
+   * asigna los nuevos movimientos válidos del jugador pasado como parámetro.
+   * @param 
+   */
+  void asignaMovimientosValidos(int jugador){
     for(int x = 0; x < dimension; x++)
-      for(int y = 0; y < dimension; y++)
-        if(mundo[i][j] == 0 && movimientosValidos(x, y, jugador))
-         mundo[i][j] = 2;
+      for(int y = 0; y < dimension; y++){
+        if(mundo[x][y] == 2) //Si una casilla era válida en turno anterior, deja de serlo.
+          mundo[x][y] = 0;
+        if(mundo[x][y] == 0 && movimientosValidos(x, y, jugador)) //Si una casilla está vacía y cumple con los requisitos para ser movimiento válido, se asigna como tal.
+         mundo[x][y] = 2;
+      }
   }
 
   /**
@@ -384,106 +392,112 @@ class Tablero{
       if(y == 0){
         // Caso esquina superior izquierda
         if(mundo[x][y+1] == oponente)
-          direccion[4] = verifica(x, y, 4, oponente, jugador);
+          direccion[4] = verifica(x, y, 4, jugador, oponente);
         if(mundo[x+1][y] == oponente)
-          direccion[6] = verifica(x, y, 6, oponente, jugador);  
+          direccion[6] = verifica(x, y, 6, jugador, oponente);  
         if(mundo[x+1][y+1] == oponente)
-          direccion[7] = verifica(x, y, 7, oponente, jugador);
-      }else if(y == dimension-1){
+          direccion[7] = verifica(x, y, 7, jugador, oponente);
+      }else{
+        if(y == dimension-1){
         // Caso esquina superior derecha
         if(mundo[x][y-1] == oponente)
-          direccion[3] = verifica(x, y, 3, oponente, jugador); 
+          direccion[3] = verifica(x, y, 3, jugador, oponente); 
         if(mundo[x+1][y-1] == oponente)
-          direccion[5] = verifica(x, y, 5, oponente, jugador);
+          direccion[5] = verifica(x, y, 5, jugador, oponente);
         if(mundo[x+1][y] == oponente)
-          direccion[6] = verifica(x, y, 6, oponente, jugador);
+          direccion[6] = verifica(x, y, 6, jugador, oponente);
       }else{
         // Caso linea superior del tablero sin tomar en cuenta las esquinas
         if(mundo[x][y-1] == oponente)
-          direccion[3] = verifica(x, y, 3, oponente, jugador); 
+          direccion[3] = verifica(x, y, 3, jugador, oponente); 
         if(mundo[x][y+1] == oponente)
-          direccion[4] = verifica(x, y, 4, oponente, jugador);  
+          direccion[4] = verifica(x, y, 4, jugador, oponente);  
         if(mundo[x+1][y-1] == oponente)
-          direccion[5] = verifica(x, y, 5, oponente, jugador);
+          direccion[5] = verifica(x, y, 5, jugador, oponente);
         if(mundo[x+1][y] == oponente)
-          direccion[6] = verifica(x, y, 6, oponente, jugador);
+          direccion[6] = verifica(x, y, 6, jugador, oponente);
         if(mundo[x+1][y+1] == oponente)
-          direccion[7] = verifica(x, y, 7, oponente, jugador);
+          direccion[7] = verifica(x, y, 7, jugador, oponente);
       }
+    }
     }else{
       if(x == dimension-1){
         if(y == 0){
           // Caso esquina inferior izquierda
           if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
+            direccion[1] = verifica(x, y, 1, jugador, oponente);  
           if(mundo[x-1][y+1] == oponente) 
-            direccion[2] = verifica(x, y, 2, oponente, jugador);  
+            direccion[2] = verifica(x, y, 2, jugador, oponente);  
           if(mundo[x][y+1] == oponente)
-            direccion[4] = verifica(x, y, 4, oponente, jugador);  
-        }else if(y == dimension-1){
+            direccion[4] = verifica(x, y, 4, jugador, oponente);  
+        }else{
+          if(y == dimension-1){
           // Caso esquina inferior derecha 
           if(mundo[x][y-1] == oponente)
-            direccion[3] = verifica(x, y, 3, oponente, jugador); 
+            direccion[3] = verifica(x, y, 3, jugador, oponente); 
           if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
+            direccion[1] = verifica(x, y, 1, jugador, oponente);  
           if(mundo[x-1][y-1] == oponente)
-            direccion[0] = verifica(x, y, 0, oponente, jugador);  
+            direccion[0] = verifica(x, y, 0, jugador, oponente);  
         }else{
           // Caso borde inferior sin tomar en cuenta las esquinas
           if(mundo[x][y-1] == oponente)
-            direccion[3] = verifica(x, y, 3, oponente, jugador); 
+            direccion[3] = verifica(x, y, 3, jugador, oponente); 
           if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
+            direccion[1] = verifica(x, y, 1, jugador, oponente);  
           if(mundo[x-1][y-1] == oponente)
-            direccion[0] = verifica(x, y, 0, oponente, jugador);  
+            direccion[0] = verifica(x, y, 0, jugador, oponente);  
           if(mundo[x][y+1] == oponente)
-            direccion[4] = verifica(x, y, 4, oponente, jugador);  
+            direccion[4] = verifica(x, y, 4, jugador, oponente);  
           if(mundo[x-1][y+1] == oponente)
-            direccion[2] = verifica(x, y, 2, oponente, jugador);
+            direccion[2] = verifica(x, y, 2, jugador, oponente);
+        }
         }
       }else{
         if(y == 0){
           // Caso borde izquierdo sin tomar en cuenta las esquinas
           if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
+            direccion[1] = verifica(x, y, 1, jugador, oponente);  
           if(mundo[x-1][y+1] == oponente) 
-            direccion[2] = verifica(x, y, 2, oponente, jugador);  
+            direccion[2] = verifica(x, y, 2, jugador, oponente);  
           if(mundo[x][y+1] == oponente)
-            direccion[4] = verifica(x, y, 4, oponente, jugador);  
+            direccion[4] = verifica(x, y, 4, jugador, oponente);  
           if(mundo[x+1][y] == oponente)
-            direccion[6] = verifica(x, y, 6, oponente, jugador);
+            direccion[6] = verifica(x, y, 6, jugador, oponente);
           if(mundo[x+1][y+1] == oponente)
-            direccion[7] = verifica(x, y, 7, oponente, jugador); 
-        }else if(y == dimension-1){
-          // Caso borde derecho sin tomar en cuenta las esquinas
-          if(mundo[x][y-1] == oponente)
-            direccion[3] = verifica(x, y, 3, oponente, jugador); 
+            direccion[7] = verifica(x, y, 7, jugador, oponente); 
+          }else{
+            if(y == dimension-1){
+            // Caso borde derecho sin tomar en cuenta las esquinas
+            if(mundo[x][y-1] == oponente)
+            direccion[3] = verifica(x, y, 3, jugador, oponente); 
           if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
+            direccion[1] = verifica(x, y, 1, jugador, oponente);  
           if(mundo[x-1][y-1] == oponente)
-            direccion[0] = verifica(x, y, 0, oponente, jugador);  
+            direccion[0] = verifica(x, y, 0, jugador, oponente);  
           if(mundo[x+1][y-1] == oponente)
-            direccion[5] = verifica(x, y, 5, oponente, jugador);
+            direccion[5] = verifica(x, y, 5, jugador, oponente);
           if(mundo[x+1][y] == oponente)
-            direccion[6] = verifica(x, y, 6, oponente, jugador);
-        }else{
-          // Caso resto del tablero(para este punto ya no estamos en ningun borde)
-          if(mundo[x-1][y-1] == oponente)
-            direccion[0] = verifica(x, y, 0, oponente, jugador);  
-          if(mundo[x-1][y] == oponente)
-            direccion[1] = verifica(x, y, 1, oponente, jugador);  
-          if(mundo[x-1][y+1] == oponente)
-            direccion[2] = verifica(x, y, 2, oponente, jugador);  
-          if(mundo[x][y-1] == oponente)
-            direccion[3] = verifica(x, y, 3, oponente, jugador); 
-          if(mundo[x][y+1] == oponente)
-            direccion[4] = verifica(x, y, 4, oponente, jugador);  
-          if(mundo[x+1][y-1] == oponente)
-            direccion[5] = verifica(x, y, 5, oponente, jugador);
-          if(mundo[x+1][y] == oponente)
-            direccion[6] = verifica(x, y, 6, oponente, jugador);
-          if(mundo[x+1][y+1] == oponente)
-           direccion[7] = verifica(x, y, 7, oponente, jugador);
+            direccion[6] = verifica(x, y, 6, jugador, oponente);
+          }else{
+            // Caso resto del tablero(para este punto ya no estamos en ningun borde)
+            if(mundo[x-1][y-1] == oponente)
+              direccion[0] = verifica(x, y, 0, jugador, oponente);  
+            if(mundo[x-1][y] == oponente)
+              direccion[1] = verifica(x, y, 1, jugador, oponente);  
+            if(mundo[x-1][y+1] == oponente)
+              direccion[2] = verifica(x, y, 2, jugador, oponente);  
+            if(mundo[x][y-1] == oponente)
+              direccion[3] = verifica(x, y, 3, jugador, oponente); 
+            if(mundo[x][y+1] == oponente)
+              direccion[4] = verifica(x, y, 4, jugador, oponente);  
+            if(mundo[x+1][y-1] == oponente)
+              direccion[5] = verifica(x, y, 5, jugador, oponente);
+            if(mundo[x+1][y] == oponente)
+              direccion[6] = verifica(x, y, 6, jugador, oponente);
+            if(mundo[x+1][y+1] == oponente)
+             direccion[7] = verifica(x, y, 7, jugador, oponente);
+          }
         }
       }
     }
@@ -491,7 +505,7 @@ class Tablero{
     boolean resultado = false;
     for(int i  = 0; i < 8; i++){
       resultado = resultado || direccion[i];
-      //direccion[i] = false;
+      direccion[i] = false;
     }
     return resultado;
   }
@@ -503,7 +517,7 @@ class Tablero{
     5 6 7
     el * representa donde esta parado
   */
-  boolean verifica(int x, int y, int direccion, int oponente, int jugador){
+  boolean verifica(int x, int y, int direccion, int jugador, int oponente){
     int i = 0, j = 0;
 
     switch(direccion){
@@ -554,18 +568,8 @@ class Tablero{
   }
 
   /**
-   * Quita todos los 2 del tablero, esto con la finalidad de que se
-   * vuelvan a recalcular para el siguiente jugador.
-   */
-  public void limpia(){
-    for(int i = 0; i < dimension; i++)
-      for(int j = 0; j < dimension; j++)
-        if(mundo[i][j] == 2)
-          mundo[i][j] = 0;
-  }
-
-  /**
    * Cuenta las fichas de un jugador.
+   * @param jugador el entero que representa al jugador.
    */
   public int fichas(int jugador){
     int total = 0;
